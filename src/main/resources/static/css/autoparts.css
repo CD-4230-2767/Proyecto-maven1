@@ -1,0 +1,87 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 15 may 2026, 3:50:26 p.m.
+    Author     : user
+*/
+/* Sección de productos destacados */
+body{
+    background-color: #f5f5f5;
+}
+
+/* Cards */
+.autoparts-destacados .card{
+    height: 100%;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Hover */
+.autoparts-destacados .card:hover{
+    transform: translateY(-5px);
+}
+
+/* Imágenes */
+.autoparts-destacados .card img{
+    height: 220px;
+    object-fit: cover;
+}
+
+/* Títulos */
+.autoparts-destacados .card-title{
+    font-weight: bold;
+    color: #c0392b;
+}
+
+/* Botón */
+.autoparts-destacados .btn-primary{
+    background-color: #c0392b;
+    border: none;
+}
+
+.autoparts-destacados .btn-primary:hover{
+    background-color: #96281b;
+}
+
+.categorias-menu {
+    display: flex;
+    flex-direction: column; /* Cambiamos de horizontal a vertical */
+    gap: 10px;             /* Espacio entre cada botón */
+    padding: 5px;
+}
+
+.categoria-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Deja el texto a la izquierda y da un toque limpio */
+    padding: 12px 20px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;           /* Bordes semi-redondeados que lucen más ejecutivos */
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.03); /* Sombra muy sutil */
+}
+
+/* Efecto Hover usando tus colores */
+.categoria-item:hover {
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    transform: translateX(5px); /* Se mueve un poquito a la derecha al pasar el mouse */
+}
+
+/* Categoría activa (la seleccionada actualmente) */
+.categoria-item.active {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    font-weight: bold;
+}

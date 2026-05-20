@@ -1,0 +1,17 @@
+{
+    "elements": {},
+    "attributes": {
+        "th:text": {
+            "context": "h5"
+        },
+        "th:src": {
+            "context": "img"
+        },
+        "th:each": {
+            "context": "div"
+        },
+        "th:field": {
+            "context": "select"
+        }
+    }
+}
