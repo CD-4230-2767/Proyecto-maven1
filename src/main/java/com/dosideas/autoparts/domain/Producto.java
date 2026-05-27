@@ -10,7 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 /**
  *
  * @author user
@@ -45,21 +46,23 @@ public class Producto  {
     @Column(name = "prov_id")
     private int provId;
 
-    @Column(name = "cat_id")
-    private int catId;
+    @ManyToOne
+    @JoinColumn(name = "cat_id")
+    private Categoria categoria;
 
     // Constructor completo
-    public Producto(int prodId, String prodNombre, String prodDescripcion, int prodStock, double prodPrecioCompra, double prodPrecioVenta, String prodImagenUrl, int provId, int catId) {
-        this.prodId = prodId;
-        this.prodNombre = prodNombre;
-        this.prodDescripcion = prodDescripcion;
-        this.prodStock = prodStock;
-        this.prodPrecioCompra = prodPrecioCompra;
-        this.prodPrecioVenta = prodPrecioVenta;
-        this.prodImagenUrl = prodImagenUrl;
-        this.provId = provId;
-        this.catId = catId;
-    }
+    public Producto(int prodId, String prodNombre,String prodDescripcion,int prodStock,double prodPrecioCompra,
+                    double prodPrecioVenta,String prodImagenUrl,int provId,Categoria categoria) {
+    this.prodId = prodId;
+    this.prodNombre = prodNombre;
+    this.prodDescripcion = prodDescripcion;
+    this.prodStock = prodStock;
+    this.prodPrecioCompra = prodPrecioCompra;
+    this.prodPrecioVenta = prodPrecioVenta;
+    this.prodImagenUrl = prodImagenUrl;
+    this.provId = provId;
+    this.categoria = categoria;
+}
 
     // Constructor vacío
     public Producto() {
@@ -129,12 +132,12 @@ public class Producto  {
         this.provId = provId;
     }
 
-    public int getCatId() {
-        return catId;
+    public Categoria getCategoria() {
+    return categoria;
     }
 
-    public void setCatId(int catId) {
-        this.catId = catId;
-    }
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+}
 
 }

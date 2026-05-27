@@ -4,14 +4,21 @@
         "th:text": {
             "context": "h5"
         },
+        "th:if": {},
         "th:src": {
             "context": "img"
         },
+        "th:action": {},
+        "th:max": {},
         "th:each": {
             "context": "div"
         },
         "th:field": {
             "context": "select"
+        },
+        "th:href": {},
+        "th:value": {
+            "context": "input"
         }
     }
 }

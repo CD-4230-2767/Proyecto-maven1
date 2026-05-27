@@ -1,19 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.dosideas.autoparts.controller;
 
 import com.dosideas.autoparts.domain.Producto;
-import com.dosideas.autoparts.domain.Categoria; // <-- Importamos tu clase Categoria
-import com.dosideas.autoparts.repository.CategoriaRepository; // <-- Importamos tu repositorio de categorías
+import com.dosideas.autoparts.domain.Categoria;
+import com.dosideas.autoparts.repository.CategoriaRepository;
+import com.dosideas.autoparts.repository.ProductoRepository;
 import com.dosideas.autoparts.service.ProductoService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired; // <-- Importamos el Autowired
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
 
 /**
  *
@@ -21,32 +22,69 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class ListadoController {
-    
-    @Autowired // <-- Con esto Spring Boot llena la variable automáticamente sin dejarla null
+
+    @Autowired
     private CategoriaRepository categoriaRepository;
-    
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
     private final ProductoService productoService;
 
-    // Mantenemos el constructor para el servicio de productos
     public ListadoController(ProductoService productoService) {
         this.productoService = productoService;
     }
 
     @RequestMapping("/")
-    public String listarProductos(Model model) {
+    public String listarProductos(
 
-        List<Producto> destacados = productoService.buscarDestacados();
-        model.addAttribute("productos", destacados);
+            @RequestParam(required = false) String consulta,
+            @RequestParam(required = false) Integer categoriaId,
+            Model model) {
 
-        // SOLUCIÓN AL ERROR EN INDEX.HTML:
-        // Buscamos todas las categorías de MySQL y las mandamos a la plantilla Thymeleaf
+        List<Producto> productos;
+
+        // BUSCAR POR NOMBRE + CATEGORIA
+        if(consulta != null && !consulta.isEmpty()
+                && categoriaId != null) {
+
+            productos = productoRepository
+                    .buscarPorNombreYCategoria(consulta, categoriaId);
+
+        }
+        // SOLO NOMBRE
+        else if(consulta != null && !consulta.isEmpty()) {
+
+            productos = productoRepository
+                    .buscarPorNombre(consulta);
+
+        }
+        // SOLO CATEGORIA
+        else if(categoriaId != null) {
+
+            productos = productoRepository
+                    .buscarPorCategoria(categoriaId);
+
+        }
+        // TODOS
+        else {
+
+            productos = productoRepository.buscarTodos();
+        }
+
+        model.addAttribute("productos", productos);
+
+        // CATEGORIAS
         List<Categoria> listaCategorias = categoriaRepository.findAll();
         model.addAttribute("categorias", listaCategorias);
-        
-        // Si la línea 47 del index.html usa un objeto categoría vacío para registrar datos (th:object="${categoria}"):
-        model.addAttribute("categoria", new Categoria());
 
         return "index";
     }
-
+    
+    @GetMapping("/producto/{id}")
+    public String verProducto(@PathVariable Integer id,Model model){
+    Producto producto = productoRepository.findById(id).orElse(null);
+    model.addAttribute("producto", producto);
+    return "detalle-producto";
+}
 }

@@ -17,18 +17,21 @@
             <span style="font-size: 28px; font-weight: bold; color: #111;">AutoPartes</span>
         </a>
         <ul class="navbar-nav ml-auto d-flex flex-row">
+
             <li class="nav-item mr-4">
-                <a class="nav-link text-dark" href="#">
+                <a class="nav-link text-dark" th:href="@{/}">
                     <i class="bi bi-house-door"></i>
                     Productos
                 </a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link text-dark" href="#">
+                <a class="nav-link text-dark" th:href="@{/carrito}">
                     <i class="bi bi-cart3"></i>
                     Carrito
                 </a>
             </li>
+
         </ul>
     </nav>
 
@@ -38,57 +41,82 @@
             Explora nuestra selección de auto partes de alta calidad
         </p>
         <div class="row mt-4">
-            <!-- MENÚ DE CATEGORÍAS -->
-            <div class="form-group">
+            <!-- COLUMNA DE CATEGORÍAS -->
+            <div class="col-md-3">
+                <form th:action="@{/}" method="get">
 
-                <label for="categoria">Categoría</label>
-
-                <select class="form-control" 
-                        th:field="*{categoria}" 
-                        id="categoria">
-
-                    <option value="">Seleccione una categoría</option>
-
-                    <option th:each="categoria : ${categorias}"
-                            th:value="${categoria.catId}"
-                            th:text="${categoria.catNombre}">
-                    </option>
-
-                </select>
-
-            </div>
-            <!-- PRODUCTOS -->
-            <div th:each="producto : ${productos}" class="col-md-3 mb-4">
-
-                <div class="card border-0 shadow-sm h-100">
-
-                    <!-- Imagen -->
-                    <img th:src="${producto.prodImagenUrl}" 
-                         class="card-img-top" 
-                         alt="Producto">
-
-                    <div class="card-body d-flex flex-column">
-
-                        <!-- Nombre -->
-                        <h5 th:text="${producto.prodNombre}"
-                            class="card-title font-weight-bold"></h5>
-
-                        <!-- Descripción -->
-                        <p th:text="${producto.prodDescripcion}"
-                           class="card-text text-muted"></p>
-
-                        <!-- Precio -->
-                        <h3 th:text="'$' + ${producto.prodPrecioVenta}"
-                            class="font-weight-bold mb-3"></h3>
-
-                        <!-- Botón -->
-                        <a href="#" class="btn btn-danger mt-auto">
-                            <i class="bi bi-eye-fill"></i>
-                            Ver Detalles
-                        </a>
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+                        <select class="form-control" name="categoriaId" id="categoria">
+                            <option value="">Seleccione una categoría</option>
+                            <option th:each="cat : ${categorias}"
+                                    th:value="${cat.catId}"
+                                    th:text="${cat.catNombre}"
+                                    th:selected="${cat.catId == param.categoriaId}">
+                            </option>
+                        </select>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <label for="buscar">Buscar producto</label>
+                        <input type="text"
+                               name="consulta"
+                               class="form-control"
+                               id="buscar"
+                               th:value="${param.consulta}"
+                               placeholder="Ej. Batería, frenos...">
+                    </div>
+
+                    <button type="submit" class="btn btn-danger btn-block">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </form>
             </div>
+            <!-- COLUMNA DE PRODUCTOS -->
+            <div class="col-md-9">
+
+                <div class="row">
+
+                    <div th:each="producto : ${productos}" class="col-md-4 mb-4">
+
+                        <div class="card border-0 shadow-sm h-100">
+
+                            <!-- Imagen -->
+                            <img th:src="${producto.prodImagenUrl}"
+                                 class="card-img-top"
+                                 alt="Producto">
+
+                            <div class="card-body d-flex flex-column">
+
+                                <!-- Nombre -->
+                                <h5 th:text="${producto.prodNombre}"
+                                    class="card-title font-weight-bold"></h5>
+
+                                <!-- Descripción -->
+                                <p th:text="${producto.prodDescripcion}"
+                                   class="card-text text-muted"></p>
+
+                                <!-- Precio -->
+                                <h3 th:text="'$' + ${producto.prodPrecioVenta}"
+                                    class="font-weight-bold mb-3"></h3>
+
+                                <!-- Botón -->
+                                <a th:href="@{/producto/{id}(id=${producto.prodId})}"
+                                   class="btn btn-danger mt-auto">
+                                    <i class="bi bi-eye-fill"></i>
+                                    Ver detalles
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
     </div>
 
