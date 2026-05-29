@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Listado de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/modern-footer.css">
+    <link rel="stylesheet" href="/css/Style-admin.css">
+    
+</head>
+<body class="bg-light">
+
+    <div class="d-flex">
+        <div class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
+            <h4 class="text-center mb-4">AutoParts Admin</h4>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item mb-2">
+                    <a href="/admin/dashboard" class="nav-link text-white">📊 Dashboard / Pedidos</a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="/admin/productos" class="nav-link text-white active">📦 Productos</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="container-fluid p-4">
+            
+            <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Inventario de Autopartes</h2>
+                <a th:href="@{/admin/productos/nuevo}" class="btn btn-success px-4">+ Nuevo Producto</a>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Imagen</th>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Stock</th>
+                                <th>P. Compra</th>
+                                <th>P. Venta</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="prod : ${productos}">
+                                <td>
+                                    <img th:src="${prod.prodImagenUrl}" alt="Falta imagen" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                </td>
+                                <td th:text="${prod.prodId}"></td>
+                                <td th:text="${prod.prodNombre}"></td>
+                                <td th:text="${prod.prodStock}"></td>
+                                <td th:text="'$' + ${prod.prodPrecioCompra}"></td>
+                                <td th:text="'$' + ${prod.prodPrecioVenta}"></td>
+                                <td class="text-center">
+                                    <div class="btn-group gap-2">
+                                        <a th:href="@{/admin/productos/editar/{id}(id=${prod.prodId})}" class="btn btn-info btn-sm">Modificar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(productos)}">
+                                <td colspan="7" class="text-center text-muted py-4">No hay productos registrados en el inventario.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

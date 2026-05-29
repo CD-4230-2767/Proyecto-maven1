@@ -1,0 +1,176 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 27 may 2026, 1:13:59 p.m.
+    Author     : user
+*/
+
+/* src/main/resources/static/css/admin-styles.css */
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* Menú Lateral (Sidebar) estilo Figma */
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background-color: #1e2530;
+}
+
+.sidebar .nav-link {
+    color: #babcbe;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    transition: all 0.2s ease;
+}
+
+.sidebar .nav-link.active {
+    background-color: #2c3545;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.sidebar .nav-link:hover:not(.active) {
+    background-color: #252d3a;
+    color: #ffffff;
+}
+
+.main-content {
+    width: 100%;
+}
+
+/* Tarjetas y Contenedores Premium */
+.custom-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    background-color: #ffffff;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    background: #ffffff;
+    padding: 20px;
+}
+
+.icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/* Tablas Limpias */
+.table th {
+    background-color: #fcfcfc;
+    color: #5a6578;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #edf0f4;
+    padding: 15px;
+}
+
+.table td {
+    padding: 15px;
+    color: #2d3748;
+    border-bottom: 1px solid #edf0f4;
+    font-size: 0.9rem;
+}
+
+/* Badges de Estado de Pedidos */
+.badge-en-curso {
+    background-color: #fffaf0;
+    color: #dd6b20;
+    border: 1px solid #fbd38d;
+}
+
+.badge-completado {
+    background-color: #f0fff4;
+    color: #38a169;
+    border: 1px solid #9ae6b4;
+}
+
+/* Botones Minimalistas y sutiles */
+.btn-action-view {
+    color: #3182ce;
+    background-color: #ebf8ff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-action-view:hover {
+    background-color: #cee8ff;
+}
+
+.btn-action-edit {
+    color: #4a5568;
+    background-color: #edf2f7;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-action-edit:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-action-delete {
+    color: #e53e3e;
+    background-color: #fff5f5;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-action-delete:hover {
+    background-color: #fed7d7;
+    color: #9b2c2c;
+}
+
+.btn-add-new {
+    background-color: #1e2530;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-add-new:hover {
+    background-color: #2c3545;
+    color: #ffffff;
+}
+
+/* Pestañas de Navegación */
+.nav-tabs .nav-link {
+    border: none;
+    color: #718096;
+    font-weight: 500;
+    padding: 10px 20px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #1e2530;
+    border-bottom: 3px solid #1e2530;
+    background: none;
+}

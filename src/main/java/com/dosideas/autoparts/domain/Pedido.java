@@ -66,21 +66,44 @@ public class Pedido {
     }
 
     // --- GETTERS Y SETTERS ---
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id; 
+    }
+    public void setId(Long id) { 
+        this.id = id; 
+    }
 
-    public LocalDateTime getFechaPedido() { return fechaPedido; }
-    public void setFechaPedido(LocalDateTime fechaPedido) { this.fechaPedido = fechaPedido; }
+    public LocalDateTime getFechaPedido() {
+        return fechaPedido; 
+    }
+    public void setFechaPedido(LocalDateTime fechaPedido) {
+        this.fechaPedido = fechaPedido; 
+    }
+    public LocalDateTime getFechaEntrega() {
+        return fechaEntrega; 
+    }
+    public void setFechaEntrega(LocalDateTime fechaEntrega) {
+        this.fechaEntrega = fechaEntrega; 
+    }
 
-    public LocalDateTime getFechaEntrega() { return fechaEntrega; }
-    public void setFechaEntrega(LocalDateTime fechaEntrega) { this.fechaEntrega = fechaEntrega; }
+    public String getMetodoPago() { 
+        return metodoPago;
+    }
+    public void setMetodoPago(String metodoPago) { 
+        this.metodoPago = metodoPago; 
+    }
 
-    public String getMetodoPago() { return metodoPago; }
-    public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+    public Long getClienteId() { 
+        return clienteId;
+    }
+    public void setClienteId(Long clienteId) { 
+        this.clienteId = clienteId; 
+    }
 
-    public Long getClienteId() { return clienteId; }
-    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
-
-    public List<DetallePedido> getDetalles() { return detalles; }
-    public void setDetalles(List<DetallePedido> detalles) { this.detalles = detalles; }
+    public List<DetallePedido> getDetalles() { 
+        return detalles;
+    }
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles; 
+    }
 }

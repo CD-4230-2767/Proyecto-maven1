@@ -12,6 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Transient; 
+
+
 /**
  *
  * @author user
@@ -43,16 +46,19 @@ public class Producto  {
     @Column(name = "`prod_imagenUrl`")
     private String prodImagenUrl;
 
-    @Column(name = "prov_id")
-    private int provId;
+    @ManyToOne
+    @JoinColumn(name = "prov_id")
+    private Proveedor proveedor;
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
     private Categoria categoria;
+ 
+    
 
     // Constructor completo
     public Producto(int prodId, String prodNombre,String prodDescripcion,int prodStock,double prodPrecioCompra,
-                    double prodPrecioVenta,String prodImagenUrl,int provId,Categoria categoria) {
+                    double prodPrecioVenta,String prodImagenUrl,Proveedor proveedor,Categoria categoria){
     this.prodId = prodId;
     this.prodNombre = prodNombre;
     this.prodDescripcion = prodDescripcion;
@@ -60,7 +66,7 @@ public class Producto  {
     this.prodPrecioCompra = prodPrecioCompra;
     this.prodPrecioVenta = prodPrecioVenta;
     this.prodImagenUrl = prodImagenUrl;
-    this.provId = provId;
+    this.proveedor = proveedor;
     this.categoria = categoria;
 }
 
@@ -115,7 +121,7 @@ public class Producto  {
     public void setProdPrecioVenta(double prodPrecioVenta) {
         this.prodPrecioVenta = prodPrecioVenta;
     }
-
+    
     public String getProdImagenUrl() {
         return prodImagenUrl;
     }
@@ -124,20 +130,22 @@ public class Producto  {
         this.prodImagenUrl = prodImagenUrl;
     }
 
-    public int getProvId() {
-        return provId;
+    // getters y setters para usar el objeto Proveedor
+    public Proveedor getProveedor() {
+        return proveedor;
     }
 
-    public void setProvId(int provId) {
-        this.provId = provId;
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
-
+    
+     // getters y setters para usar el objeto Categorias
     public Categoria getCategoria() {
-    return categoria;
+        return categoria; 
     }
-
+    
     public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-}
-
-}
+    this.categoria = categoria;
+    }
+    
+  }

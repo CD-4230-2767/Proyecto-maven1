@@ -24,7 +24,7 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cat_id")
-    private int catId;
+    private Integer catId;
 
     @Column(name = "cat_nombre")
     private String catNombre;
@@ -40,7 +40,7 @@ public class Categoria {
     }
 
     // Constructor completo corregido
-    public Categoria(int catId, String catNombre, String catDescripcion, String catEstado) {
+    public Categoria(Integer catId, String catNombre, String catDescripcion, String catEstado) {
         this.catId = catId;
         this.catNombre = catNombre;
         this.catDescripcion = catDescripcion;
@@ -48,7 +48,7 @@ public class Categoria {
     }
 
     // Getters y Setters completos
-    public int getCatId() {
+    public Integer getCatId() {
         return catId;
     }
 

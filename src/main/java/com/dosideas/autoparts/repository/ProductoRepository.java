@@ -20,29 +20,21 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     // BUSCAR SOLO POR NOMBRE
     @Query("""
-           SELECT p
-           FROM Producto p
-           WHERE LOWER(p.prodNombre)
-           LIKE LOWER(CONCAT('%', ?1, '%'))
+           SELECT p FROM Producto p WHERE LOWER(p.prodNombre) LIKE LOWER(CONCAT('%', ?1, '%'))
            """)
     List<Producto> buscarPorNombre(String nombre);
 
-    // BUSCAR SOLO POR CATEGORIA (Corregido para usar el objeto relacion)
+    // BUSCAR SOLO POR CATEGORIA
     @Query("""
-           SELECT p
-           FROM Producto p
-           WHERE p.categoria.catId = ?1
+           SELECT p FROM Producto p WHERE p.categoria.catId = ?1
            """)
     List<Producto> buscarPorCategoria(Integer categoriaId);
 
-    // BUSCAR POR NOMBRE Y CATEGORIA (Corregido para usar el objeto relacion)
+    // BUSCAR POR NOMBRE Y CATEGORIA
     @Query("""
-           SELECT p
-           FROM Producto p
-           WHERE LOWER(p.prodNombre)
-           LIKE LOWER(CONCAT('%', ?1, '%'))
+           SELECT p FROM Producto p 
+           WHERE LOWER(p.prodNombre) LIKE LOWER(CONCAT('%', ?1, '%')) 
            AND p.categoria.catId = ?2
            """)
     List<Producto> buscarPorNombreYCategoria(String nombre, Integer categoriaId);
-
 }
