@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,8 +20,12 @@ import java.util.Optional;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
-    @Query("SELECT p FROM Pedido p WHERE p.clienteId = :clienteId AND p.metodoPago IS NULL")
-    Optional<Pedido> buscarCarritoActivoPorCliente(@Param("clienteId") Long clienteId);
-
+    @Query("""
+        SELECT p 
+        FROM Pedido p 
+        WHERE p.cliente.cliId = :clienteId 
+        AND p.estado = 'PENDIENTE' 
+        ORDER BY p.id DESC
+        """)
+        List<Pedido> buscarCarritosActivosPorCliente(@Param("clienteId") Long clienteId);
 }
-

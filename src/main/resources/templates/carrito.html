@@ -100,11 +100,12 @@
                             <span class="text-danger" th:text="'$' + ${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">$0.00</span>
                         </div>
 
-                        <form th:action="@{/carrito/pagar}" method="post">
-                            <button type="submit" class="btn btn-danger btn-block btn-lg font-weight-bold shadow-sm">
+                        <div class="mt-3">
+                            <a th:href="@{/pagar}"
+                               class="btn btn-danger btn-block btn-lg font-weight-bold shadow-sm">
                                 Proceder al Pago
-                            </button>
-                        </form>
+                            </a>
+                        </div>
 
                         <a th:href="@{/}" class="d-block text-center mt-3 text-secondary small">
                             <i class="bi bi-arrow-left"></i> Continuar comprando

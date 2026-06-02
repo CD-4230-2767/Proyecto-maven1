@@ -31,57 +31,49 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/admin/productos")
 public class ProductoAdminController {
 
-    @Autowired // <--- ¡Asegúrate de que esto esté presente!
+    @Autowired
     private ProductoRepository productoRepository;
-    
-    @Autowired // <--- ¡Asegúrate de que esto esté presente!
+
+    @Autowired
     private ProveedorRepository proveedorRepository;
 
-    @Autowired // <--- ¡Asegúrate de que esto esté presente!
+    @Autowired
     private CategoriaRepository categoriaRepository;
 
-    // 1. LISTAR: Este método se ejecutará cuando le des al botón "Productos" del menú lateral
     @GetMapping
-    public String listarProductosAdmin(Model model) {
-        List<Producto> listaProductos = productoRepository.findAll();
-        model.addAttribute("productos", listaProductos);
-        return "productos-listado"; // Nombre del nuevo HTML con la tabla
+    public String listar(Model model) {
+        model.addAttribute("productos", productoRepository.findAll());
+        return "admin/productos-listado";
     }
-    // 1. GET: Carga el formulario vacío (para el botón "+ Nuevo Producto")
+
     @GetMapping("/nuevo")
-    public String mostrarFormularioNuevo(Model model) {
-        Producto p = new Producto();
-        p.setCategoria(new Categoria());
-        p.setProveedor(new Proveedor());
-        model.addAttribute("producto", p);
-        
-        // Cargamos las listas para los SELECTs
+    public String nuevo(Model model) {
+        model.addAttribute("producto", new Producto());
         model.addAttribute("listaProveedores", proveedorRepository.findAll());
         model.addAttribute("listaCategorias", categoriaRepository.findAll());
-        
-        return "productos"; 
+        return "admin/productos";
     }
 
     @PostMapping("/guardar")
-    public String guardarProducto(@ModelAttribute("producto") Producto producto,
-                                  RedirectAttributes redirectAttributes) {
-
+    public String guardar(Producto producto) {
         productoRepository.save(producto);
-
-        redirectAttributes.addFlashAttribute("mensaje",
-                "Producto guardado correctamente");
-
         return "redirect:/admin/productos";
     }
 
-    // 3. EDITAR: Carga los datos para modificar
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable("id") int id, Model model) {
-        Producto producto = productoRepository.findById(id).orElse(null);
-        if (producto != null) {
-            model.addAttribute("producto", producto);
-            return "producto";
-        }
+    public String editar(@PathVariable int id, Model model) {
+        model.addAttribute("producto",
+                productoRepository.findById(id).orElse(null));
+
+        model.addAttribute("listaProveedores", proveedorRepository.findAll());
+        model.addAttribute("listaCategorias", categoriaRepository.findAll());
+
+        return "admin/productos";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable int id) {
+        productoRepository.deleteById(id);
         return "redirect:/admin/productos";
     }
 }

@@ -52,7 +52,7 @@ public class Categoria {
         return catId;
     }
 
-    public void setCatId(int catId) {
+    public void setCatId(Integer catId) {
         this.catId = catId;
     }
 

@@ -1,0 +1,144 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 1 jun 2026, 8:56:45 a.m.
+    Author     : user
+*/
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d6efd 0%,
+            #0b5ed7 50%,
+            #084298 100%
+        );
+
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card{
+    width:100%;
+    max-width:450px;
+
+    border:none;
+    border-radius:20px;
+
+    background:#fff;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.15);
+
+    overflow:hidden;
+
+    animation:fadeIn .5s ease;
+}
+
+.login-header{
+    text-align:center;
+    padding:30px 20px 10px;
+}
+
+.logo-icon{
+    font-size:55px;
+    color:#dc3545;
+}
+
+.logo-title{
+    font-size:28px;
+    font-weight:700;
+    color:#212529;
+    margin-top:10px;
+}
+
+.logo-subtitle{
+    color:#6c757d;
+    font-size:14px;
+}
+
+.login-body{
+    padding:30px;
+}
+
+.form-label{
+    font-weight:600;
+    color:#495057;
+}
+
+.form-control{
+    border-radius:12px;
+    padding:12px;
+    border:1px solid #ced4da;
+
+    transition:.3s;
+}
+
+.form-control:focus{
+    border-color:#0d6efd;
+    box-shadow:0 0 0 0.2rem rgba(13,110,253,.15);
+}
+
+.btn-login{
+    width:100%;
+    padding:12px;
+
+    border:none;
+    border-radius:12px;
+
+    background:#dc3545;
+    color:white;
+
+    font-size:16px;
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.btn-login:hover{
+    background:#bb2d3b;
+    transform:translateY(-2px);
+}
+
+.register-link{
+    text-decoration:none;
+    font-weight:600;
+    color:#0d6efd;
+}
+
+.register-link:hover{
+    color:#084298;
+}
+
+.extra-links{
+    text-align:center;
+    margin-top:20px;
+    color:#6c757d;
+}
+
+.extra-links a{
+    text-decoration:none;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+

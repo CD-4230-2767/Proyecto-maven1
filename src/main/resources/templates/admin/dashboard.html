@@ -54,36 +54,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="tab-content" id="adminTabsContent">
 
                     <div class="tab-pane fade show active" id="pedidos" role="tabpanel">
-                        
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-4">
-                                <div class="stat-card d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <p class="text-muted small mb-1 fw-medium">Total de Pedidos</p>
-                                        <h3 class="fw-bold mb-0" th:text="${#lists.size(listaPedidos)}">0</h3>
-                                    </div>
-                                    <div class="icon-box bg-light text-primary"><i class="bi bi-box"></i></div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="stat-card d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <p class="text-muted small mb-1 fw-medium">En Curso</p>
-                                        <h3 class="fw-bold mb-0 text-warning">3</h3>
-                                    </div>
-                                    <div class="icon-box" style="background-color: #fffaf0; color: #dd6b20;"><i class="bi bi-clock"></i></div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="stat-card d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <p class="text-muted small mb-1 fw-medium">Completados</p>
-                                        <h3 class="fw-bold mb-0 text-success">4</h3>
-                                    </div>
-                                    <div class="icon-box" style="background-color: #f0fff4; color: #38a169;"><i class="bi bi-check2-circle"></i></div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="card custom-card">
                             <div class="p-3 border-bottom">
@@ -94,39 +64,50 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <thead>
                                         <tr>
                                             <th>ID Pedido</th>
-                                            <th>Cliente ID</th>
-                                            <th>Fecha</th>
+                                            <th>Cliente</th>
+                                            <th>Fecha Pedido</th>
+                                            <th>Fecha Entrega</th>
                                             <th>Método Pago</th>
                                             <th>Estado</th>
                                             <th class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="pedido : ${listaPedidos}" th:if="${!#lists.isEmpty(listaPedidos)}">
-                                            <td class="fw-bold text-muted" th:text="'#' + ${pedido.id}"></td>
-                                            <td class="fw-semibold" th:text="${pedido.clienteId}"></td>
-                                            <td th:text="${#temporals.format(pedido.fechaPedido, 'dd MMM yyyy, HH:mm')}"></td>
-                                            <td th:text="${pedido.metodoPago != null ? pedido.metodoPago : 'CARRITO'}"></td>
+                                        <tr th:each="pedido : ${listaPedidos}">
+
+                                            <td class="fw-bold text-muted"
+                                                th:text="'#' + ${pedido.id}">
+                                            </td>
+
+                                            <td th:text="${pedido.cliente != null ? pedido.cliente.cliNombre : 'Sin cliente'}"></td>
+
+                                            <td th:text="${#temporals.format(pedido.fechaPedido,'dd/MM/yyyy')}">
+                                            </td>
+
+                                            <td th:text="${#temporals.format(pedido.fechaEntrega,'dd/MM/yyyy')}">
+                                            </td>
+
+                                            <td th:text="${pedido.metodoPago}"></td>
+
                                             <td>
-                                                <span th:if="${pedido.fechaEntrega != null}" class="badge badge-completado px-2 py-1 rounded-2">
-                                                    <i class="bi bi-check-lg me-1"></i> Completado
+                                                <span th:if="${pedido.estado == 'ENTREGADO'}"
+                                                      class="badge bg-success">
+                                                    ENTREGADO
                                                 </span>
-                                                <span th:if="${pedido.fechaEntrega == null}" class="badge badge-en-curso px-2 py-1 rounded-2">
-                                                    <i class="bi bi-clock-history me-1"></i> En Curso
+
+                                                <span th:if="${pedido.estado == 'PENDIENTE'}"
+                                                      class="badge bg-warning text-dark">
+                                                    PENDIENTE
                                                 </span>
                                             </td>
+
                                             <td class="text-center">
-                                                <a th:href="@{/admin/pedidos/detalles/{id}(id=${pedido.id})}" class="btn btn-action-view btn-sm px-3">
+                                                <a th:href="@{/admin/pedido/detalles(id=${pedido.id})}"
+                                                   class="btn btn-action-view btn-sm px-3">
                                                     <i class="bi bi-eye me-1"></i> Ver Detalles
                                                 </a>
                                             </td>
-                                        </tr>
-                                        <tr th:if="${#lists.isEmpty(listaPedidos)}">
-                                            <td colspan="6" class="text-center text-muted py-5">
-                                                <i class="bi bi-box-open d-block fs-2 mb-2" style="color: #a0aec0;"></i>
-                                                <span class="fw-medium">No se encontraron pedidos registrados</span>
-                                                <p class="small text-muted mb-0">Cuando un cliente realice una compra, aparecerá aquí.</p>
-                                            </td>
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -137,35 +118,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="tab-pane fade" id="clientes" role="tabpanel">
                         <div class="d-flex justify-content-between align-items-center mb-3 p-2">
                             <h5 class="mb-0 fw-bold">Listado de Clientes</h5>
-                            <button class="btn btn-add-new btn-sm">+ Nuevo Cliente</button>
+                            <a th:href="@{/admin/cliente/nuevo}" class="btn btn-add-new btn-sm">+ Nuevo Cliente</a>
                         </div>
+
+                        <p class="text-info">Clientes recibidos: <span th:text="${#lists.size(listaClientes)}">0</span></p>
+
                         <table class="table table-hover align-middle">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Teléfono</th>
                                     <th>Email</th>
-                                    <th>Dirección (Calle, Col)</th>
-                                    <th>Estado</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr th:if="${#lists.isEmpty(listaClientes)}">
+                                    <td colspan="4" class="text-center">No hay clientes registrados en la base de datos.</td>
+                                </tr>
                                 <tr th:each="cliente : ${listaClientes}">
                                     <td class="fw-bold text-muted" th:text="${cliente.cliId}"></td>
                                     <td class="fw-semibold" th:text="${cliente.cliNombre}"></td>
-                                    <td th:text="${cliente.cliTelefono}"></td>
                                     <td th:text="${cliente.cliEmail}"></td>
-                                    <td th:text="${cliente.cliCalle} + ', ' + ${cliente.cliColonia}"></td>
-                                    <td th:text="${cliente.cliEstado}"></td>
                                     <td class="text-center">
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <a th:href="@{/admin/clientes/modificar(id=${cliente.cliId})}" class="btn btn-action-edit btn-sm px-3">Modificar</a>
-                                            <a th:href="@{/admin/clientes/eliminar(id=${cliente.cliId})}" class="btn btn-action-delete btn-sm px-3">Eliminar</a>
-                                        </div>
+                                        <a th:href="@{/admin/cliente/modificar(id=${cliente.cliId})}" class="btn btn-sm btn-outline-warning">Modificar</a>
+                                        <a th:href="@{/admin/cliente/eliminar(id=${cliente.cliId})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar?')">Eliminar</a>
                                     </td>
-                                </tr>   
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -173,35 +152,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="tab-pane fade" id="proveedores" role="tabpanel">
                         <div class="d-flex justify-content-between align-items-center mb-3 p-2">
                             <h5 class="mb-0 fw-bold">Listado de Proveedores</h5>
-                            <button class="btn btn-add-new btn-sm">+ Nuevo Proveedor</button>
+                            <a th:href="@{/admin/proveedor/nuevo}" class="btn btn-add-new btn-sm">+ Nuevo Proveedor</a>
                         </div>
+
+                        <p class="text-info">Proveedores recibidos: <span th:text="${#lists.size(listaProveedores)}">0</span></p>
+
                         <table class="table table-hover align-middle">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Empresa</th>
-                                    <th>Teléfono</th>
-                                    <th>Email</th>
-                                    <th>Fecha Registro</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr th:if="${#lists.isEmpty(listaProveedores)}">
+                                    <td colspan="4" class="text-center">No hay proveedores registrados.</td>
+                                </tr>
                                 <tr th:each="prov : ${listaProveedores}">
                                     <td class="fw-bold text-muted" th:text="${prov.provId}"></td>
                                     <td class="fw-semibold" th:text="${prov.provNombre}"></td>
                                     <td th:text="${prov.provEmpresa}"></td>
-                                    <td th:text="${prov.provTelefono}"></td>
-                                    <td th:text="${prov.provEmail}"></td>
-                                    <td th:text="${prov.provFechaRegistro}"></td>
                                     <td class="text-center">
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <a th:href="@{/admin/proveedores/modificar(id=${prov.provId})}" class="btn btn-action-edit btn-sm px-3">Modificar</a>
-                                            <a th:href="@{/admin/proveedores/eliminar(id=${prov.provId})}" class="btn btn-action-delete btn-sm px-3">Eliminar</a>
-                                        </div>
+                                        <a th:href="@{/admin/proveedor/modificar(id=${prov.provId})}" class="btn btn-sm btn-outline-warning">Modificar</a>
+                                        <a th:href="@{/admin/proveedor/eliminar(id=${prov.provId})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar?')">Eliminar</a>
                                     </td>
-                                </tr>   
+                                </tr>
                             </tbody>
                         </table>
                     </div>

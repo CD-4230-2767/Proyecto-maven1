@@ -46,6 +46,9 @@ public class Cliente {
 
     @Column(name = "cli_estado")
     private String cliEstado;
+    
+    @Column(name = "cli_password")
+    private String cliPassword;
 
     // Constructor vacío (Obligatorio para JPA)
     public Cliente() {
@@ -53,7 +56,7 @@ public class Cliente {
 
     // Constructor con campos
     public Cliente(Integer cliId, String cliNombre, String cliTelefono, String cliEmail, 
-                   String cliCalle, String cliCp, String cliColonia, String cliEstado) {
+                   String cliCalle, String cliCp, String cliColonia, String cliEstado, String cliPassword) {
         this.cliId = cliId;
         this.cliNombre = cliNombre;
         this.cliTelefono = cliTelefono;
@@ -62,6 +65,7 @@ public class Cliente {
         this.cliCp = cliCp;
         this.cliColonia = cliColonia;
         this.cliEstado = cliEstado;
+        this.cliPassword = cliPassword;
     }
 
     // Getters y Setters
@@ -119,5 +123,13 @@ public class Cliente {
     }
     public void setCliEstado(String cliEstado) {
         this.cliEstado = cliEstado;
+    }
+    
+    public String getCliPassword() {
+    return cliPassword;
+    }
+
+    public void setCliPassword(String cliPassword) {
+        this.cliPassword = cliPassword;
     }
 }

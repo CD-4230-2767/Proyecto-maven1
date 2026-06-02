@@ -1,0 +1,46 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 1 jun 2026, 9:09:11 a.m.
+    Author     : user
+*/
+body{
+    background:#f4f6f9;
+}
+
+.pedido-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.pedido-header{
+    background:#1a202c;
+    color:white;
+    border-radius:15px 15px 0 0 !important;
+}
+
+.pedido-header h2{
+    margin:0;
+    font-weight:700;
+}
+
+.table{
+    background:white;
+}
+
+.table thead{
+    background:#edf2f7;
+}
+
+.table th{
+    color:#2d3748;
+    font-weight:600;
+}
+
+.badge{
+    font-size:.85rem;
+    padding:.5rem .8rem;
+}

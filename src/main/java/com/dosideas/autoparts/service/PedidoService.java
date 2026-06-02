@@ -1,18 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.dosideas.autoparts.service;
 
+import com.dosideas.autoparts.domain.Cliente;
 import com.dosideas.autoparts.domain.DetallePedido;
 import com.dosideas.autoparts.domain.Pedido;
 import com.dosideas.autoparts.domain.Producto;
+import com.dosideas.autoparts.repository.ClienteRepository;
 import com.dosideas.autoparts.repository.DetallePedidoRepository;
 import com.dosideas.autoparts.repository.PedidoRepository;
 import com.dosideas.autoparts.repository.ProductoRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PedidoService {
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -32,23 +34,59 @@ public class PedidoService {
     private DetallePedidoRepository detallePedidoRepository;
 
     @Transactional
-    public Pedido agregarProductoAlCarrito(Long clienteId, Integer productoId, Integer cantidad) {
+    public Pedido agregarProductoAlCarrito(Long clienteId,
+                                           Integer productoId,
+                                           Integer cantidad) {
+
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        Pedido pedido = pedidoRepository.buscarCarritoActivoPorCliente(clienteId)
-                .orElseGet(() -> new Pedido(clienteId));
+        List<Pedido> carritos =
+                pedidoRepository.buscarCarritosActivosPorCliente(clienteId);
 
-        Optional<DetallePedido> detalleExistente = pedido.getDetalles().stream()
-                .filter(det -> det.getProducto().getProdId() == productoId)
-                .findFirst();
+        Pedido pedido;
+
+        if (carritos.isEmpty()) {
+
+            Cliente cliente = clienteRepository
+                    .findById(clienteId.intValue())
+                    .orElseThrow(() ->
+                            new RuntimeException("Cliente no encontrado"));
+
+            pedido = new Pedido();
+            pedido.setCliente(cliente);
+            pedido.setEstado("PENDIENTE");
+            pedido.setFechaPedido(java.time.LocalDateTime.now());
+
+        } else {
+
+            pedido = carritos.get(0);
+        }
+
+        Optional<DetallePedido> detalleExistente =
+                pedido.getDetalles().stream()
+                        .filter(det ->
+                            Integer.valueOf(det.getProducto().getProdId()).equals(productoId))
+                        .findFirst();
 
         if (detalleExistente.isPresent()) {
+
             DetallePedido detalle = detalleExistente.get();
             detalle.setCantidad(detalle.getCantidad() + cantidad);
+
         } else {
-            BigDecimal precio = BigDecimal.valueOf(producto.getProdPrecioVenta());
-            DetallePedido nuevoDetalle = new DetallePedido(pedido, producto, cantidad, precio);
+
+            BigDecimal precio =
+                    BigDecimal.valueOf(producto.getProdPrecioVenta());
+
+            DetallePedido nuevoDetalle =
+                    new DetallePedido(
+                            pedido,
+                            producto,
+                            cantidad,
+                            precio
+                    );
+
             pedido.agregarDetalle(nuevoDetalle);
         }
 
@@ -56,47 +94,87 @@ public class PedidoService {
     }
 
     public Optional<Pedido> obtenerCarritoActivo(Long clienteId) {
-        return pedidoRepository.buscarCarritoActivoPorCliente(clienteId);
+
+        List<Pedido> carritos =
+                pedidoRepository.buscarCarritosActivosPorCliente(clienteId);
+
+        if (carritos.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(carritos.get(0));
     }
 
     @Transactional
-    public void eliminarDetalle(Long detalleId){
+    public void eliminarDetalle(Long detalleId) {
         detallePedidoRepository.deleteById(detalleId);
     }
 
     @Transactional
-    public void sumarCantidad(Long detalleId){
+    public void sumarCantidad(Long detalleId) {
+
         DetallePedido detalle = detallePedidoRepository.findById(detalleId)
-                .orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
+                .orElseThrow(() ->
+                        new RuntimeException("Detalle no encontrado"));
+
         detalle.setCantidad(detalle.getCantidad() + 1);
+
         detallePedidoRepository.save(detalle);
     }
 
     @Transactional
-    public void restarCantidad(Long detalleId){
-        DetallePedido detalle = detallePedidoRepository.findById(detalleId)
-                .orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
+    public void restarCantidad(Long detalleId) {
 
-        if(detalle.getCantidad() > 1){
+        DetallePedido detalle = detallePedidoRepository.findById(detalleId)
+                .orElseThrow(() ->
+                        new RuntimeException("Detalle no encontrado"));
+
+        if (detalle.getCantidad() > 1) {
+
             detalle.setCantidad(detalle.getCantidad() - 1);
+
             detallePedidoRepository.save(detalle);
+
         } else {
+
             detallePedidoRepository.delete(detalle);
         }
     }
 
     @Transactional
-    public void finalizarCompra(Long clienteId){
-        Pedido pedido = pedidoRepository.buscarCarritoActivoPorCliente(clienteId)
-                .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+    public void finalizarCompra(Long clienteId, String metodoPago) {
 
-        for(DetallePedido detalle : pedido.getDetalles()){
+        List<Pedido> carritos =
+                pedidoRepository.buscarCarritosActivosPorCliente(clienteId);
+
+        if (carritos.isEmpty()) {
+            throw new RuntimeException("Carrito no encontrado");
+        }
+
+        Pedido pedido = carritos.get(0);
+
+        for (DetallePedido detalle : pedido.getDetalles()) {
+
             Producto producto = detalle.getProducto();
-            producto.setProdStock(producto.getProdStock() - detalle.getCantidad());
+
+            if (producto.getProdStock() < detalle.getCantidad()) {
+                throw new RuntimeException(
+                        "Stock insuficiente para "
+                        + producto.getProdNombre()
+                );
+            }
+
+            producto.setProdStock(
+                    producto.getProdStock() - detalle.getCantidad()
+            );
+
             productoRepository.save(producto);
         }
 
-        pedido.setMetodoPago("EFECTIVO");
+        pedido.setMetodoPago(metodoPago);
+        pedido.setEstado("ENTREGADO"); // o PAGADO
+        pedido.setFechaEntrega(java.time.LocalDateTime.now().plusDays(3));
+
         pedidoRepository.save(pedido);
     }
 }

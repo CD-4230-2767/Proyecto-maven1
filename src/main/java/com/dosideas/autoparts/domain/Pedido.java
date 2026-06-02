@@ -35,8 +35,12 @@ public class Pedido {
     private String metodoPago;
 
     // ID del cliente que realiza la compra
-    @Column(name = "cli_id", nullable = false) // <-- Cambiado a true para que acepte nulos
-    private Long clienteId;
+    @ManyToOne
+    @JoinColumn(name = "cli_id")
+    private Cliente cliente;
+    
+    @Column(name="ped_estado")
+    private String estado;
 
     // RELACIÓN BIDIRECCIONAL: Un pedido tiene muchos detalles.
     // 'mappedBy = "pedido"' le dice a JPA que la relación la gobierna el campo 'pedido' en DetallePedido.
@@ -44,13 +48,11 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetallePedido> detalles = new ArrayList<>();
 
-    // --- CONSTRUCTORES ---
-    public Pedido() {
-    }
+    // --- CONSTRUCTORE ---
 
-    public Pedido(Long clienteId) {
-        this.clienteId = clienteId;
-        this.fechaPedido = LocalDateTime.now(); // Se crea con la fecha y hora actual
+    public Pedido() {
+    this.fechaPedido = LocalDateTime.now();
+    this.estado = "PENDIENTE";
     }
 
     // --- MÉTODOS DE AYUDA (Helper Methods) ---
@@ -72,7 +74,7 @@ public class Pedido {
     public void setId(Long id) { 
         this.id = id; 
     }
-
+    
     public LocalDateTime getFechaPedido() {
         return fechaPedido; 
     }
@@ -92,12 +94,13 @@ public class Pedido {
     public void setMetodoPago(String metodoPago) { 
         this.metodoPago = metodoPago; 
     }
-
-    public Long getClienteId() { 
-        return clienteId;
+    
+    public Cliente getCliente() {
+    return cliente;
     }
-    public void setClienteId(Long clienteId) { 
-        this.clienteId = clienteId; 
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public List<DetallePedido> getDetalles() { 
@@ -105,5 +108,12 @@ public class Pedido {
     }
     public void setDetalles(List<DetallePedido> detalles) {
         this.detalles = detalles; 
+    }
+    public String getEstado() {
+    return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
